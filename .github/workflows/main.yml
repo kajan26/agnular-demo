@@ -12,8 +12,12 @@ jobs:
       run: |
         ollama serve &
         ollama pull llama3.2:latest
-    - name: Checkout code
-      uses: actions/checkout@v4
+    - name: Checkout pull request HEAD
+      id: checkout_pr_head
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+        fetch-depth: 0
     - name: Code Review
       run: |
         command="ollama run llama3.2:latest"
