@@ -11,7 +11,7 @@ jobs:
     - name: Run ollama
       run: |
         ollama serve &
-        ollama pull llama3.1:8b
+        ollama pull llama3.2:latest
     - name: Checkout code
       uses: actions/checkout@v4
     - name: Call ollama API
@@ -20,5 +20,5 @@ jobs:
     - name: Code Review
       run: |
         command="ollama run llama3.2:latest"
-        diff=$(git diff --name-only origin/main origin/${GITHUB_HEAD_REF})
+        diff=$(git diff main)
         $command "Review this code: $diff, provide suggestions for improvement, coding best practices, improve readability, and maintainability. Remove any code smells and anti-patterns. Provide code examples for your suggestion. Respond in markdown format. If the file does not have any code or does not need any changes, say 'No changes needed'."
