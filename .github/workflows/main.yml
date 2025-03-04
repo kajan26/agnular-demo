@@ -14,11 +14,9 @@ jobs:
         ollama pull llama3.2:latest
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Call ollama API
-      run: |
-        curl -d '{"model": "phi3:mini", "stream": false, "prompt":"Whatever I say, asnwer with Yes"}' http://localhost:11434/api/generate
     - name: Code Review
       run: |
         command="ollama run llama3.2:latest"
-        diff=$(git diff main)
+        git fetch origin main
+        git diff origin/main..HEAD > diff
         $command "Review this code: $diff, provide suggestions for improvement, coding best practices, improve readability, and maintainability. Remove any code smells and anti-patterns. Provide code examples for your suggestion. Respond in markdown format. If the file does not have any code or does not need any changes, say 'No changes needed'."
