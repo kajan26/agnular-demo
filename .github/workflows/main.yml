@@ -16,7 +16,7 @@ jobs:
       id: checkout_pr_head
       uses: actions/checkout@v2
       with:
-        fetch-depth: 1
+        fetch-depth: 0
     - name: Code Review
       run: |
         command="ollama run llama3.2:latest"
