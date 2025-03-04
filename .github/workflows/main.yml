@@ -21,5 +21,5 @@ jobs:
     - name: Code Review
       run: |
         command="ollama run llama3.2:latest"
-        mycode=$(git diff main)
+        git diff github.event.pull_request.base.sha github.event.pull_request.head.sha > mycode
         $command "Review this code: $mycode, provide suggestions for improvement, coding best practices, improve readability, and maintainability. Remove any code smells and anti-patterns. Provide code examples for your suggestion. Respond in markdown format. If the file does not have any code or does not need any changes, say 'No changes needed'."
