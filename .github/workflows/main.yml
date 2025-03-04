@@ -14,22 +14,11 @@ jobs:
         ollama pull llama3.1:8b
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Run Container Action
-      uses: ljy2855/llm_code_reviewer@v1
-      with:
-        # fixed field
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        github_owner: ${{ github.repository_owner }}
-        github_repository: ${{ github.repository }}
-        pr_number: ${{ github.event.pull_request.number }}
-        pr_title: ${{ github.event.pull_request.title }}
-        pr_body: ${{ github.event.pull_request.body }}
-        # you might fill
-        ollama_api_url: 'http://localhost:11434'    
-        # optional field
-        ollama_model: 'llama3.1:8b'
-        prompt_type: 'GENERAL_REVIEW'
-        prompt_language: 'EN' 
     - name: Call ollama API
       run: |
         curl -d '{"model": "phi3:mini", "stream": false, "prompt":"Whatever I say, asnwer with Yes"}' http://localhost:11434/api/generate
+    - name: Code Review
+      run: |
+        command="ollama run llama3.2:latest"
+        diff=$(git diff --name-only origin/main origin/${GITHUB_HEAD_REF})
+        $command "Review this code: $diff, provide suggestions for improvement, coding best practices, improve readability, and maintainability. Remove any code smells and anti-patterns. Provide code examples for your suggestion. Respond in markdown format. If the file does not have any code or does not need any changes, say 'No changes needed'."
